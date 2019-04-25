@@ -1,0 +1,14 @@
+{
+  "name": "wumpus",
+  "version": "0.0.1",
+  "description": "Discord bot framework",
+  "author": "RiceGnat",
+  "repository": "github:RiceGnat/wumpus",
+  "engines": {
+    "node": ">=7.0"
+  },
+  "dependencies": {
+    "discord.io": "github:izy521/discord.io",
+    "dotenv": "^6.0.0"
+  }
+}
