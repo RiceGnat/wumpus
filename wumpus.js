@@ -22,7 +22,7 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
     // Parse commands
     bot.on("message", function (user, userId, channelId, message, evt) {
         // Build context object
-        var context = {
+        let context = {
             sender: {
                 user: user,
                 userId: userId,

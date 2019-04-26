@@ -2,8 +2,8 @@ const commands = {};
 
 function ParseCommand(str, context) {
     // Separate command word and args
-    var args = str.split(" ");
-    var cmd = args[0];
+    let args = str.split(" ");
+    let cmd = args[0];
     args = args.slice(1);
 
     return Promise.resolve(commands[cmd] ? commands[cmd].handler(context, ...args) : null);
@@ -49,7 +49,7 @@ function subcmd(name, format, desc, parent, handler) {
 }
 
 function cmdHelp(command, parent) {
-    var format = [];
+    let format = [];
     if (parent) format.push(parent);
     format.push(command.name);
     if (command.format) format.push(command.format);
