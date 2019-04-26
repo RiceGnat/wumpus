@@ -19,15 +19,15 @@ function cmd(name, format, desc, category, handler, sub) {
     };
 
     // If no handler specified, use subcommand redirect
-    if (handler === null) {
+    if (!handler) {
         command.handler = (context, ...args) => {
             if (args.length > 0 && commands[name].subcommands[args[0]]) {
-                commands[name].subcommands[args[0]].handler(context, args.slice(1));
+                return commands[name].subcommands[args[0]].handler(context, args.slice(1));
             }
         }
     }
     // If handler is specified but not a function
-    else if (typeof h !== "function") {
+    else if (typeof handler !== "function") {
         throw "Handler must be a function";
     }
     // Set command handler to given function
