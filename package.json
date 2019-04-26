@@ -2,6 +2,7 @@
   "name": "wumpus",
   "version": "0.0.1",
   "description": "Discord bot framework",
+  "main": "wumpus.js",
   "author": "RiceGnat",
   "repository": "github:RiceGnat/wumpus",
   "engines": {
