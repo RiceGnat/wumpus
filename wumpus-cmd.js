@@ -10,16 +10,30 @@ function ParseCommand(str, context) {
 }
 
 function cmd(name, format, desc, category, handler, sub) {
-    if (typeof handler !== "function")
-        throw "Handler must be a function";
-
     const command = {
         name: name,
         format: format,
         description: desc,
-        handler: handler,
+        handler: null,
         subcommands: []
     };
+
+    // If no handler specified, use subcommand redirect
+    if (handler === null) {
+        command.handler = (context, ...args) => {
+            if (args.length > 0 && commands[name].subcommands[args[0]]) {
+                commands[name].subcommands[args[0]].handler(context, args.slice(1));
+            }
+        }
+    }
+    // If handler is specified but not a function
+    else if (typeof h !== "function") {
+        throw "Handler must be a function";
+    }
+    // Set command handler to given function
+    else {
+        command.handler = handler;
+    }
 
     if (sub) {
         commands[category].subcommands[name] = command;
