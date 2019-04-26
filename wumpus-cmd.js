@@ -46,5 +46,6 @@ module.exports = {
     parse: ParseCommand,
     add: cmd,
     addsub: subcmd,
+    list: commands,
     getHelpFormat: cmdHelp
 };
