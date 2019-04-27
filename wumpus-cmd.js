@@ -22,7 +22,7 @@ function cmd(name, format, desc, category, handler, sub) {
     if (!handler) {
         command.handler = (context, ...args) => {
             if (args.length > 0 && commands[name].subcommands[args[0]]) {
-                return commands[name].subcommands[args[0]].handler(context, args.slice(1));
+                return commands[name].subcommands[args[0]].handler(context, ...args.slice(1));
             }
         }
     }
@@ -56,10 +56,48 @@ function cmdHelp(command, parent) {
     return `\`!${format.join(" ")}\`\t${command.description}`;
 }
 
+function help(embed) {
+    cmd("help",
+        "[<command>]",
+        "Get usage and bot info",
+        "Help",
+        (context, name) => {
+            if (!name) {
+                let fields = {};
+                Object.values(commands).forEach(command => {
+                    if (!fields[command.category]) fields[command.category] = [];
+
+                    fields[command.category].push(cmdHelp(command));
+                    const subcommands = Object.values(command.subcommands);
+                    if (subcommands.length > 0) {
+                        subcommands.forEach(subcommand => {
+                            fields[command.category].push(`${cmdHelp(subcommand, command.name)}`);
+                        });
+                    }
+                });
+
+                embed.fields = Object.entries(fields).map(([key, value]) => ({
+                    name: key,
+                    value: value.join("\n")
+                }));
+
+                return {
+                    to: context.sender.channelId,
+                    embed: embed
+                };
+            }
+            else return { 
+                    to: context.sender.channelId,
+                    message: cmdHelp(commands[name])
+                };
+        });
+}
+
 module.exports = {
     parse: ParseCommand,
     add: cmd,
     addsub: subcmd,
+    help: help,
     list: commands,
-    getHelpFormat: cmdHelp
+    getHelpString: cmdHelp
 };
