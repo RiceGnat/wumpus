@@ -1,14 +1,14 @@
 {
   "name": "wumpus",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Discord bot framework",
   "main": "wumpus.js",
   "author": "RiceGnat",
   "repository": "github:RiceGnat/wumpus",
   "engines": {
-    "node": ">=7.0"
+    "node": ">=10.0"
   },
   "dependencies": {
-    "discord.io": "github:izy521/discord.io"
+    "discord.js": "^11.4.2"
   }
 }

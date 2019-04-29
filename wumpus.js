@@ -1,41 +1,40 @@
-const Discord = require("discord.io");
+const Discord = require("discord.js");
 const cmd = require("./wumpus-cmd");
 
 function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
-    const bot = new Discord.Client({
-        token: token,
-        autorun: true
-    });
+    const bot = new Discord.Client();
 
-    bot.on("ready", function (evt) {
-        console.log(`Connected to Discord as ${bot.username} (${bot.id})`);
-        console.log(`${bot.username} is in ${Object.entries(bot.servers).length} servers`);
+    bot.on("ready", function () {
+        console.log(`Connected to Discord as ${bot.user.username} (${bot.user.id})`);
+        console.log(`${bot.user.username} is in ${Object.entries(bot.guilds).length} servers`);
     });
 
     // Automatically reconnect on disconnect
-    bot.on("disconnect", function (errMsg, code) {
-        console.log(`Disconnected (${code}: ${errMsg})`);
+    bot.on("disconnect", function (event) {
+        console.log(`Disconnected (${event.code}: ${event.reason})`);
         console.log("Reconnecting...");
-        bot.connect();
+        bot.login(token);
     });
 
     // Parse commands
-    bot.on("message", function (user, userId, channelId, message, evt) {
+    bot.on("message", function (message) {
         // Build context object
         let context = {
             sender: {
-                user: user,
-                userId: userId,
-                channelId: channelId
+                user: message.author.username,
+                userId: message.author.userId,
+                channelId: message.channel.id,
+                serverId: message.guild ? message.guild.id : null,
             },
+            message: message,
             bot: bot
         };
 
         // Add app context properties
         Object.assign(context, appContext);
 
-        if (message.startsWith(cmdPrefix)) {
-            cmd.parse(message.substring(1), context)
+        if (message.content.startsWith(cmdPrefix)) {
+            cmd.parse(message.content.substring(1), context)
             .then(msg => {
                 if (msg) bot.sendMessage(msg);
             }, error => {
@@ -48,6 +47,9 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
         cmdSetupFunc(cmd);
         console.log("Commands registered");
     }
+
+    // Connect
+    bot.login(token);
 
     return bot;
 }
