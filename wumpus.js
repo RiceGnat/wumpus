@@ -6,7 +6,7 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
 
     bot.on("ready", function () {
         console.log(`Connected to Discord as ${bot.user.username} (${bot.user.id})`);
-        console.log(`${bot.user.username} is in ${Object.entries(bot.guilds).length} servers`);
+        console.log(`${bot.user.username} is in ${bot.guilds.array().length} servers`);
     });
 
     // Automatically reconnect on disconnect
@@ -36,7 +36,7 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
         if (message.content.startsWith(cmdPrefix)) {
             cmd.parse(message.content.substring(1), context)
             .then(msg => {
-                if (msg) bot.sendMessage(msg);
+                if (msg) message.channel.send(msg.message, msg);
             }, error => {
                 console.log(error);
             });
