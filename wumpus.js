@@ -22,7 +22,7 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
         let context = {
             sender: {
                 user: message.author.username,
-                userId: message.author.userId,
+                userId: message.author.id,
                 channelId: message.channel.id,
                 serverId: message.guild ? message.guild.id : null,
             },
