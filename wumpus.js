@@ -34,7 +34,7 @@ function bootstrap(token, cmdPrefix, appContext, cmdSetupFunc) {
         Object.assign(context, appContext);
 
         let cmdText = null;
-        let botMention = `<@${context.bot.user.id}>`;
+        let botMention = `<@!${context.bot.user.id}>`;
 
         // Check for command prefix
         if (message.content.startsWith(cmdPrefix)) {
